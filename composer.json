@@ -1,0 +1,38 @@
+{
+    "name": "opine/api",
+    "version": "1.0",
+    "type": "library",
+    "description": "Opine-PHP Micro-framework building APIs",
+    "keywords": [
+        "framework"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name"    : "Ryan Mahoney",
+            "email"   : "ryan@virtuecenter.com",
+            "homepage": "http://opine-php.org",
+            "role"    : "Developer"
+        }
+    ],
+    "require": {
+        "php"                : ">7.0.0",
+        "opine/build"        : "~2.0.0",
+        "opine/bundle"       : "~2.0.0",
+        "opine/cache"        : "~2.0.0",
+        "opine/config"       : "~3.0.0",
+        "opine/container"    : "~2.0.0",
+        "opine/http"         : "~2.0.0",
+        "opine/interfaces"   : "~1.0.0",
+        "opine/mail"         : "~2.0.0",
+        "opine/pubsub"       : "~2.0.0",
+        "opine/queue"        : "~2.0.0",
+        "opine/route"        : "~3.0.0",
+        "filp/whoops"        : "2.1.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Opine\\": "src/"
+        }
+    }
+}

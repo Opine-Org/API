@@ -1,0 +1,11 @@
+imports:
+    - ../../../build/config/containers/package-container.yml
+    - ../../../bundle/config/containers/package-container.yml
+    - ../../../cache/config/containers/package-container.yml
+    - ../../../config/config/containers/package-container.yml
+    - ../../../container/config/containers/package-container.yml
+    - ../../../http/config/containers/package-container.yml
+    - ../../../mail/config/containers/package-container.yml
+    - ../../../pubsub/config/containers/package-container.yml
+    - ../../../queue/config/containers/package-container.yml
+    - ../../../route/config/containers/package-container.yml
