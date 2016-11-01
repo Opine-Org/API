@@ -1,6 +1,6 @@
 {
     "name": "opine/api",
-    "version": "1.0",
+    "version": "1.0.2",
     "type": "library",
     "description": "Opine-PHP Micro-framework building APIs",
     "keywords": [
