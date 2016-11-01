@@ -1,13 +1,11 @@
 #!/usr/bin/env php
 <?php
-echo shell_exec('composer dump-autoload');
 date_default_timezone_set('UTC');
-if (!isset($_SERVER['PWD'])) {
-    die('PWD not set in _SERVER variable');
-}
-$autoloadPath = $_SERVER['PWD'] . '/vendor/autoload.php';
+echo shell_exec('cd /app && runuser -s /bin/bash www-data -c \'composer dump-autoload\'');
+$autoloadPath =  '/app/vendor/autoload.php';
 if (!file_exists($autoloadPath)) {
     die('Can not find composer autoloader: ' . $autoloadPath);
 }
 require $autoloadPath;
+chdir('/app/public');
 (new Opine\CommandLine())->run();

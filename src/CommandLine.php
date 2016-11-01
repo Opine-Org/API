@@ -18,13 +18,11 @@ class CommandLine
         $config = new Config($root);
         $config->cacheSet();
         $container = Container::instance($root, $config, $root.'/../config/containers/container.yml');
-        $this->routing($container);
         switch ($_SERVER['argv'][1]) {
             case 'help':
                 echo
                     'The available commands are:', "\n",
                     'build', "\n",
-                    'check', "\n",
                     'container-build', "\n",
                     'queue-peek', "\n",
                     'topics-show', "\n",
@@ -45,10 +43,6 @@ class CommandLine
                 $container->get('worker')->work();
                 break;
 
-            case 'check':
-                $container->get('build')->environmentCheck($root);
-                break;
-
             case 'topics-show':
                 $container->get('topic')->show();
                 break;
@@ -58,7 +52,7 @@ class CommandLine
                 break;
 
             case 'version':
-                echo file_get_contents($root.'/../vendor/opine/framework/version.txt'), "\n";
+                echo file_get_contents($root.'/../vendor/opine/api/version.txt'), "\n";
                 break;
 
             default:
