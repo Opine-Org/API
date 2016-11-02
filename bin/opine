@@ -1,7 +1,6 @@
 #!/usr/bin/env php
 <?php
 date_default_timezone_set('UTC');
-echo shell_exec('cd /app && runuser -s /bin/bash www-data -c \'composer dump-autoload\'');
 $autoloadPath =  '/app/vendor/autoload.php';
 if (!file_exists($autoloadPath)) {
     die('Can not find composer autoloader: ' . $autoloadPath);
