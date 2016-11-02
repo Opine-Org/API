@@ -18,7 +18,7 @@
         "php"                : ">7.0.0",
         "opine/build"        : "2.0.18",
         "opine/bundle"       : "2.0.16",
-        "opine/cache"        : "2.0.24",
+        "opine/cache"        : "2.0.25",
         "opine/config"       : "3.0.15",
         "opine/container"    : "2.0.13",
         "opine/http"         : "2.0.10",
