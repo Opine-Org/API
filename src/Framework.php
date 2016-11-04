@@ -139,9 +139,8 @@ class Framework
     {
         $path = $_SERVER['REQUEST_URI'];
         if (substr_count($path, '?') > 0) {
-            $path = str_replace('?'.$_SERVER['QUERY_STRING'], '', $path);
+            $path = substr($path, 0, strpos($path, '?'));
         }
-
         return $path;
     }
 
