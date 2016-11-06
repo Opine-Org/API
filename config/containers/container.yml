@@ -9,3 +9,4 @@ imports:
     - ../../../pubsub/config/containers/package-container.yml
     - ../../../queue/config/containers/package-container.yml
     - ../../../route/config/containers/package-container.yml
+    - ../../../user/config/containers/package-container.yml

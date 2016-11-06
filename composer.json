@@ -19,7 +19,7 @@
         "opine/build"        : "2.0.18",
         "opine/bundle"       : "2.0.16",
         "opine/cache"        : "2.0.25",
-        "opine/config"       : "3.0.15",
+        "opine/config"       : "3.0.16",
         "opine/container"    : "2.0.13",
         "opine/http"         : "2.0.10",
         "opine/interfaces"   : "1.0.10",
@@ -27,6 +27,7 @@
         "opine/pubsub"       : "2.0.11",
         "opine/queue"        : "2.0.10",
         "opine/route"        : "3.0.13",
+        "opine/user"         : "1.0.0",
         "filp/whoops"        : "2.1.4"
     },
     "autoload": {
