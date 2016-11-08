@@ -120,9 +120,15 @@ class Framework
 
     public function frontController()
     {
+        // if there is a token header, attempt to read and cache values for request
+        $this->processToken();
+
+        // populate the post container
         if (isset($_POST) && !empty($_POST)) {
             $this->container->get('post')->populate($_POST);
         }
+
+        // process the request
         http_response_code(200);
         try {
             $response = $this->container->get('route')->run($_SERVER['REQUEST_METHOD'], $this->pathDetermine());
@@ -133,6 +139,31 @@ class Framework
             }
             echo $e->getMessage();
         }
+    }
+
+    private function processToken () : bool
+    {
+        // see if there is any authorization header provided
+        if (!isset($_SERVER['Authorization'])) {
+            return false;
+        }
+
+        // remove the word "Bearer" from token
+        $token = str_replace('Bearer ', '', $_SERVER['Authorization']);
+
+        // get the user service from the service container
+        $userService = $this->container->get('userService');
+
+        // attempt to decode the token
+        $tokenSession = $userService->decodeJWT($token);
+
+        // if it worked, retain the information in the serice for request duration
+        if (empty($tokenSession)) {
+            return false;
+        }
+        $userService->setTokenSession($tokenSession);
+
+        return true;
     }
 
     private function pathDetermine()
