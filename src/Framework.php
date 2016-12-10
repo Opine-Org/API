@@ -144,12 +144,12 @@ class Framework
     private function processToken () : bool
     {
         // see if there is any authorization header provided
-        if (!isset($_SERVER['Authorization'])) {
+        if (!isset($_SERVER['HTTP_AUTHORIZATION'])) {
             return false;
         }
 
         // remove the word "Bearer" from token
-        $token = str_replace('Bearer ', '', $_SERVER['Authorization']);
+        $token = str_replace('Bearer ', '', $_SERVER['HTTP_AUTHORIZATION']);
 
         // get the user service from the service container
         $userService = $this->container->get('userService');
@@ -161,6 +161,8 @@ class Framework
         if (empty($tokenSession)) {
             return false;
         }
+
+        // put the token into application memory for future reference
         $userService->setTokenSession($tokenSession);
 
         return true;
