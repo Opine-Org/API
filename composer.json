@@ -19,7 +19,7 @@
         "opine/build"        : "2.0.19",
         "opine/bundle"       : "2.0.18",
         "opine/cache"        : "2.0.26",
-        "opine/config"       : "3.0.18",
+        "opine/config"       : "3.0.19",
         "opine/container"    : "2.0.13",
         "opine/http"         : "2.0.10",
         "opine/interfaces"   : "1.0.10",
