@@ -37,33 +37,20 @@ class Exception extends BaseException
 class Framework
 {
     private $container;
-    private $routeCached = false;
-    private $root;
-    private $environment;
-    private $cachePrefix;
 
-    private function environment()
+    private static function environment()
     {
-        // set environment
-        $this->environment = 'default';
-        $test = getenv('OPINE_ENV');
-        if (!empty($test)) {
-            $this->environment = $test;
-        }
-
-        // set project
-        $projectName = 'project';
-        $test = getenv('OPINE_PROJECT');
-        if ($test !== false) {
-            $projectName = $test;
-        }
-
-        $this->cachePrefix = $projectName . $this->environment;
+        return empty(getenv('OPINE_ENV')) ? 'dev' : getenv('OPINE_ENV');
     }
 
-    private function errors()
+    private static function project()
     {
-        if ($this->environment == 'production') {
+        return empty(getenv('OPINE_PROJECT')) ? 'project' : getenv('OPINE_PROJECT');
+    }
+
+    private function errors($environment)
+    {
+        if ($environment == 'production') {
             return;
         }
         $run = new Whoops\Run();
@@ -77,33 +64,37 @@ class Framework
         $run->register();
     }
 
-    public function __construct($noContainerCache = false)
+    public function __construct($noCache = false)
     {
-        $this->root = $this->root();
-        $cache = new Cache($this->root);
-        $this->environment();
-        $this->errors();
-        $items = ['bundles', 'topics', 'routes', 'container', 'config'];
-        $cacheResult = json_decode($cache->get($this->cachePrefix . '-opine'), true);
-        $containerCache = [];
-        if ($noContainerCache === false && isset($cacheResult['container'])) {
-            $containerCache = $cacheResult['container'];
+        $root = $this->root();
+        $cache = new Cache($root);
+        $environment = self::environment();
+        if ($environment == 'dev') {
+          $config = new Config($root);
+          $config->cacheSet();
+          $container = Container::instance($root, $config, $root.'/../config/containers/container.yml');
+          $container->get('build')->project($root);
         }
-        if ($cacheResult['routes'] != false) {
-            $this->routeCached = true;
+        $project = self::project();
+        $cachePrefix = $project . $environment;
+        $this->errors($environment);
+        $cacheResult = json_decode($cache->get($cachePrefix . '-opine'), true);
+        $containerData = [];
+        if ($noCache === false && isset($cacheResult['container'])) {
+            $containerData = $cacheResult['container'];
         }
-        $config = new Config($this->root);
+        $config = new Config($root);
         if ($cacheResult['config'] !== false) {
             $configData = $cacheResult['config'];
-            if (isset($configData[$this->environment])) {
-                $config->cacheSet($configData[$this->environment]);
+            if (isset($configData[$environment])) {
+                $config->cacheSet($configData[$environment]);
             } elseif (isset($configData['default'])) {
                 $config->cacheSet($configData['default']);
             }
         } else {
             $config->cacheSet();
         }
-        $this->container = Container::instance($this->root, $config, $this->root.'/../config/containers/container.yml', $noContainerCache, $containerCache);
+        $this->container = Container::instance($root, $config, $root.'/../config/containers/container.yml', $noCache, $containerData);
         $this->container->set('cache', $cache);
         $this->cache($cacheResult);
     }
@@ -141,11 +132,11 @@ class Framework
         }
     }
 
-    private function processToken () : bool
+    private function processToken ()
     {
         // see if there is any authorization header provided
         if (!isset($_SERVER['HTTP_AUTHORIZATION'])) {
-            return false;
+            return;
         }
 
         // remove the word "Bearer" from token
@@ -156,16 +147,12 @@ class Framework
 
         // attempt to decode the token
         $tokenSession = $userService->decodeJWT($token);
-
-        // if it worked, retain the information in the serice for request duration
         if (empty($tokenSession)) {
-            return false;
+            return;
         }
 
         // put the token into application memory for future reference
         $userService->setTokenSession($tokenSession);
-
-        return true;
     }
 
     private function pathDetermine()

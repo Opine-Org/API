@@ -12,7 +12,7 @@ class CommandLine
             die('no command supplied');
         }
         if (empty(getenv('OPINE_ENV'))) {
-            die('OPINE_ENV should be set on command line, even if only to: defualt');
+            die('OPINE_ENV should be set on command line, even if only to: default');
         }
         $root = $this->root();
         $config = new Config($root);
